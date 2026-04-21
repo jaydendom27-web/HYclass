@@ -1,424 +1,465 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  HardHat, BrainCircuit, GitMerge, 
-  Search, ShieldCheck, FileText, Activity, AlertTriangle, 
-  CheckCircle, Play, Settings, BookOpen, Layers, ArrowDown
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시공성 중심 AI Engineer 프레임워크</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-const App = () => {
+  <style>
+    @keyframes fade-in-up {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+      animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
 
-  // --------------------------------------------------------
-  // Section: Introduction
-  // --------------------------------------------------------
-  const IntroSection = () => (
-    <section className="relative py-24 px-6 lg:px-8 bg-white border-b border-gray-200 flex flex-col items-center text-center">
-      <div className="absolute inset-0 bg-blue-500 rounded-full opacity-10 blur-[100px] w-[600px] h-[600px] mx-auto top-10 pointer-events-none"></div>
-      
-      <div className="flex justify-center items-center space-x-6 relative z-10 bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-lg border border-blue-100 mb-10">
-        <BrainCircuit className="w-16 h-16 text-indigo-600" />
-        <GitMerge className="w-12 h-12 text-gray-400" />
-        <HardHat className="w-16 h-16 text-orange-500" />
-      </div>
-      
-      <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight mb-8">
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">시공성(Constructability)</span> 중심<br />
-        AI Engineer 프레임워크
-      </h1>
-      
-      <p className="text-xl text-gray-600 max-w-3xl leading-relaxed mb-10">
-        단순한 설계 최적화를 넘어 <strong>"실제 현장에서 얼마나 효율적이고 안전하게 건설될 수 있는가"</strong>를 평가하고 자율적으로 최적화하는 새로운 차원의 AI 에이전트 시스템입니다.
-      </p>
-      
-      <div className="flex flex-wrap justify-center gap-4 mb-16">
-        <span className="px-5 py-3 bg-indigo-50 text-indigo-700 rounded-full text-sm font-semibold flex items-center shadow-sm">
-          <BookOpen className="w-5 h-5 mr-2" /> Medical AI Scientist (공동 추론 적용)
-        </span>
-        <span className="px-5 py-3 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold flex items-center shadow-sm">
-          <Layers className="w-5 h-5 mr-2" /> The AI Scientist (트리 탐색 & 자동 검토 적용)
-        </span>
-      </div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
-      <div className="animate-bounce text-gray-400 mt-8">
-        <ArrowDown className="w-8 h-8" />
-      </div>
-    </section>
-  );
+    // 간단한 SVG 아이콘 컴포넌트들 (Lucide 아이콘 대체)
+    const HardHat = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6h0a6 6 0 0 1 6 6v3"/></svg>;
+    const BrainCircuit = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0-1.32 4.24 3 3 0 0 0 .34 5.58 2.5 2.5 0 0 0 2.96 3.08 2.5 2.5 0 0 0 4.91.05L12 20V4.5Z"/><path d="M16 8V5c0-1.1.9-2 2-2"/><path d="M12 13h4"/><path d="M12 18h6a2 2 0 0 1 2 2v1"/><path d="M12 8h8"/><circle cx="16" cy="13" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="20" cy="21" r="2"/><circle cx="20" cy="8" r="2"/></svg>;
+    const GitMerge = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>;
+    const Search = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
+    const ShieldCheck = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 6-2 7-2 2 0 6 1 7 2a1 1 0 0 1 1 1v7z"/><path d="m9 12 2 2 4-4"/></svg>;
+    const FileText = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>;
+    const Activity = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.48 12H2"/></svg>;
+    const AlertTriangle = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>;
+    const CheckCircle = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>;
+    const Play = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="6 3 20 12 6 21 6 3"/></svg>;
+    const Settings = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>;
+    const BookOpen = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+    const Layers = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>;
+    const ArrowDown = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="5" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>;
 
-  // --------------------------------------------------------
-  // Section: Step 1. Co-reasoning
-  // --------------------------------------------------------
-  const Step1Section = () => {
-    const [activeTab, setActiveTab] = useState(0);
-    const tabs = [
-      { title: "시공성 기반 추론", icon: <GitMerge />, desc: "'Medical AI Scientist'의 임상-엔지니어 공동 추론 기법을 차용하여 '시공 전문가-설계 엔지니어 공동 추론' 모듈을 작동시킵니다. 설계 도면과 현장 여건을 동시에 고려합니다." },
-      { title: "지식 기반 가설 생성", icon: <AlertTriangle />, desc: "과거의 시공 실패 사례, 모듈화(Modularization) 가이드라인, 자재 수급 제약 조건 등을 수집하여 설계 단계에서부터 시공 시의 간섭이나 병목 현상을 예측하는 가설을 세웁니다." },
-      { title: "문헌 및 사례 검색", icon: <Search />, desc: "Semantic Scholar API 등 검색 도구를 활용하여 최신 건설 공법이나 로봇 시공 기술이 적용된 사례를 찾고, 현재 설계안에 적용할 수 있는지 신규성과 타당성을 검증합니다." }
-    ];
 
-    return (
-      <section className="py-24 px-6 lg:px-8 bg-gray-50 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-          <div className="w-full md:w-1/2 space-y-6">
-            <div className="inline-block px-4 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-bold tracking-wider">STEP 1</div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">시공 중심의 아이디어 제안</h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
-              Constructor-Engineer Co-reasoning 메커니즘을 통해 설계 초기부터 현장의 제약과 과거의 지식을 융합하여 실현 가능한 아이디어를 도출합니다.
-            </p>
-            <div className="flex flex-col space-y-3 pt-4">
-              {tabs.map((tab, idx) => (
-                <button 
-                  key={idx}
-                  onClick={() => setActiveTab(idx)}
-                  className={`flex items-center p-5 rounded-2xl border transition-all duration-300 text-left ${activeTab === idx ? 'bg-white border-blue-400 shadow-lg transform scale-[1.02]' : 'bg-white/50 border-gray-200 hover:bg-white hover:border-gray-300'}`}
-                >
-                  <div className={`p-3 rounded-xl ${activeTab === idx ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-500'} mr-5 transition-colors`}>
-                    {tab.icon}
-                  </div>
-                  <span className={`font-bold text-lg ${activeTab === idx ? 'text-blue-900' : 'text-gray-700'}`}>{tab.title}</span>
-                </button>
-              ))}
-            </div>
+    const App = () => {
+
+      // --------------------------------------------------------
+      // Section: Introduction
+      // --------------------------------------------------------
+      const IntroSection = () => (
+        <section className="relative py-24 px-6 lg:px-8 bg-white border-b border-gray-200 flex flex-col items-center text-center">
+          <div className="absolute inset-0 bg-blue-500 rounded-full opacity-10 blur-[100px] w-[600px] h-[600px] mx-auto top-10 pointer-events-none"></div>
+          
+          <div className="flex justify-center items-center space-x-6 relative z-10 bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-lg border border-blue-100 mb-10">
+            <BrainCircuit className="w-16 h-16 text-indigo-600" />
+            <GitMerge className="w-12 h-12 text-gray-400" />
+            <HardHat className="w-16 h-16 text-orange-500" />
           </div>
-          <div className="w-full md:w-1/2 bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 min-h-[400px] flex flex-col justify-center relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-bl-full -z-10"></div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                {tabs[activeTab].icon} <span className="ml-3">{tabs[activeTab].title}</span>
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed bg-blue-50/50 p-6 rounded-2xl border border-blue-100/50">
-                {tabs[activeTab].desc}
-              </p>
-              {activeTab === 1 && (
-                <div className="mt-8 grid grid-cols-2 gap-4 animate-fade-in-up">
-                  <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm font-bold border border-red-100 flex items-center shadow-sm"><AlertTriangle className="w-5 h-5 mr-2"/> 간섭 오류 감지 완료</div>
-                  <div className="bg-green-50 text-green-700 p-4 rounded-xl text-sm font-bold border border-green-100 flex items-center shadow-sm"><CheckCircle className="w-5 h-5 mr-2"/> 모듈화 적용 가능성 확인</div>
-                </div>
-              )}
-          </div>
-        </div>
-      </section>
-    );
-  };
-
-  // --------------------------------------------------------
-  // Section: Step 2. Agentic Tree Search
-  // --------------------------------------------------------
-  const Step2Section = () => {
-    const [simulating, setSimulating] = useState(false);
-    const [pathFound, setPathFound] = useState(false);
-
-    const startSim = () => {
-      setSimulating(true);
-      setPathFound(false);
-      setTimeout(() => {
-        setSimulating(false);
-        setPathFound(true);
-      }, 3000);
-    };
-
-    return (
-      <section className="py-24 px-6 lg:px-8 bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto flex flex-col gap-10">
-          <div className="text-center max-w-3xl mx-auto space-y-4">
-            <div className="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-800 rounded-full text-sm font-bold tracking-wider">STEP 2</div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">시공 시뮬레이션 및 최적화 실행</h2>
-            <p className="text-gray-600 text-lg">
-              'The AI Scientist'의 <strong>에이전트 기반 트리 탐색(Agentic Tree Search)</strong> 기술을 적용합니다. 
-              수천 가지 시공 시나리오를 자율적으로 생성하고, 시뮬레이션 중 발생하는 오류(물리적 충돌 등)를 스스로 교정(Debugging)합니다.
-            </p>
+          
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight mb-8">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">시공성(Constructability)</span> 중심<br />
+            AI Engineer 프레임워크
+          </h1>
+          
+          <p className="text-xl text-gray-600 max-w-3xl leading-relaxed mb-10">
+            단순한 설계 최적화를 넘어 <strong>"실제 현장에서 얼마나 효율적이고 안전하게 건설될 수 있는가"</strong>를 평가하고 자율적으로 최적화하는 새로운 차원의 AI 에이전트 시스템입니다.
+          </p>
+          
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
+            <span className="px-5 py-3 bg-indigo-50 text-indigo-700 rounded-full text-sm font-semibold flex items-center shadow-sm">
+              <BookOpen className="w-5 h-5 mr-2" /> Medical AI Scientist (공동 추론 적용)
+            </span>
+            <span className="px-5 py-3 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold flex items-center shadow-sm">
+              <Layers className="w-5 h-5 mr-2" /> The AI Scientist (트리 탐색 & 자동 검토 적용)
+            </span>
           </div>
 
-          <div className="bg-slate-900 rounded-3xl p-8 relative overflow-hidden flex flex-col min-h-[500px] shadow-2xl">
-            <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-              <h3 className="text-white font-semibold flex items-center text-lg"><Activity className="w-6 h-6 mr-3 text-indigo-400"/> 시공 경로 탐색 시뮬레이터</h3>
-              <button 
-                onClick={startSim}
-                disabled={simulating}
-                className={`px-6 py-3 rounded-xl font-bold flex items-center transition-all ${simulating ? 'bg-slate-700 text-slate-300' : 'bg-indigo-500 hover:bg-indigo-400 text-white shadow-lg shadow-indigo-500/30'}`}
-              >
-                {simulating ? <Settings className="w-5 h-5 mr-2 animate-spin" /> : <Play className="w-5 h-5 mr-2" />}
-                {simulating ? '수천 가지 시나리오 탐색 및 자가 교정 중...' : '대형 기기 반입 경로 최적화 시작'}
-              </button>
-            </div>
-
-            {/* Tree Visualization */}
-            <div className="flex-1 flex justify-center items-center relative min-h-[300px]">
-              {/* Root */}
-              <div className="absolute top-0 w-14 h-14 bg-blue-500 rounded-full border-4 border-slate-800 z-10 flex justify-center items-center text-white font-bold text-sm shadow-lg">시작</div>
-              
-              {/* Paths */}
-              <svg className="absolute w-full h-full pointer-events-none" style={{ top: '28px' }}>
-                <path d="M 50% 0 L 30% 120px" stroke={simulating ? "#f87171" : "#334155"} strokeWidth="4" fill="none" className={simulating ? "animate-pulse" : ""} strokeDasharray="6,6" />
-                <path d="M 50% 0 L 50% 120px" stroke={simulating ? "#fbbf24" : "#334155"} strokeWidth="4" fill="none" className={simulating ? "animate-pulse" : ""} strokeDasharray="6,6" />
-                <path d="M 50% 0 L 70% 120px" stroke={pathFound ? "#4ade80" : (simulating ? "#60a5fa" : "#334155")} strokeWidth={pathFound ? "6" : "4"} fill="none" />
-                
-                {/* Level 2 */}
-                <path d="M 70% 120px L 60% 240px" stroke={simulating ? "#f87171" : "#334155"} strokeWidth="4" fill="none" strokeDasharray="6,6"/>
-                <path d="M 70% 120px L 80% 240px" stroke={pathFound ? "#4ade80" : (simulating ? "#60a5fa" : "#334155")} strokeWidth={pathFound ? "6" : "4"} fill="none" />
-              </svg>
-
-              {/* Nodes */}
-              <div className={`absolute top-[120px] left-[30%] -ml-5 w-10 h-10 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center font-bold ${simulating ? 'bg-red-500 text-white text-xs shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-slate-700 text-transparent'}`}>충돌</div>
-              <div className={`absolute top-[120px] left-[50%] -ml-5 w-10 h-10 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center font-bold ${simulating ? 'bg-yellow-500 text-white text-xs shadow-[0_0_15px_rgba(234,179,8,0.5)]' : 'bg-slate-700 text-transparent'}`}>초과</div>
-              <div className={`absolute top-[120px] left-[70%] -ml-5 w-12 h-12 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center transition-colors ${pathFound ? 'bg-green-500' : (simulating ? 'bg-blue-400' : 'bg-slate-600')}`}></div>
-              
-              <div className={`absolute top-[240px] left-[60%] -ml-5 w-10 h-10 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center font-bold ${simulating ? 'bg-red-500 text-white text-xs shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-slate-700 text-transparent'}`}>오류</div>
-              <div className={`absolute top-[240px] left-[80%] -ml-8 w-16 h-16 rounded-full border-4 border-slate-800 z-10 flex justify-center items-center font-extrabold text-white transition-all duration-500 ${pathFound ? 'bg-green-500 scale-110 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 'bg-slate-700 scale-100 text-transparent'}`}>
-                최적
-              </div>
-            </div>
-
-            <div className="h-20 mt-8 flex items-center justify-center">
-              {pathFound && (
-                <div className="bg-green-900/40 text-green-400 px-6 py-4 rounded-2xl border border-green-500/50 flex items-center animate-fade-in-up shadow-lg">
-                  <CheckCircle className="w-6 h-6 mr-3 text-green-400" /> 
-                  <span className="font-bold text-lg">자가 교정 완료: 대형 기기 최적 반입 경로 도출 (예상 공기 15% 단축)</span>
-                </div>
-              )}
-            </div>
+          <div className="animate-bounce text-gray-400 mt-8">
+            <ArrowDown className="w-8 h-8" />
           </div>
-        </div>
-      </section>
-    );
-  };
+        </section>
+      );
 
-  // --------------------------------------------------------
-  // Section: Step 3. Reviewer
-  // --------------------------------------------------------
-  const Step3Section = () => {
-    const [scores, setScores] = useState({ const: 0, access: 0, safety: 0 });
+      // --------------------------------------------------------
+      // Section: Step 1. Co-reasoning
+      // --------------------------------------------------------
+      const Step1Section = () => {
+        const [activeTab, setActiveTab] = useState(0);
+        const tabs = [
+          { title: "시공성 기반 추론", icon: <GitMerge />, desc: "'Medical AI Scientist'의 임상-엔지니어 공동 추론 기법을 차용하여 '시공 전문가-설계 엔지니어 공동 추론' 모듈을 작동시킵니다. 설계 도면과 현장 여건을 동시에 고려합니다." },
+          { title: "지식 기반 가설 생성", icon: <AlertTriangle />, desc: "과거의 시공 실패 사례, 모듈화(Modularization) 가이드라인, 자재 수급 제약 조건 등을 수집하여 설계 단계에서부터 시공 시의 간섭이나 병목 현상을 예측하는 가설을 세웁니다." },
+          { title: "문헌 및 사례 검색", icon: <Search />, desc: "Semantic Scholar API 등 검색 도구를 활용하여 최신 건설 공법이나 로봇 시공 기술이 적용된 사례를 찾고, 현재 설계안에 적용할 수 있는지 신규성과 타당성을 검증합니다." }
+        ];
 
-    useEffect(() => {
-      // Simulate scores rising when component is mounted (scrolled into view roughly)
-      const timer = setTimeout(() => {
-        setScores({ const: 85, access: 92, safety: 98 });
-      }, 500);
-      return () => clearTimeout(timer);
-    }, []);
-
-    const metrics = [
-      { label: "시공 편의성 (Constructability)", score: scores.const, color: "bg-blue-500" },
-      { label: "자재 접근성 (Material Access)", score: scores.access, color: "bg-indigo-500" },
-      { label: "작업자 안전성 (Worker Safety)", score: scores.safety, color: "bg-green-500" }
-    ];
-
-    return (
-      <section className="py-24 px-6 lg:px-8 bg-gray-50 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto flex flex-col gap-12">
-          <div className="space-y-4 max-w-3xl">
-            <div className="inline-block px-4 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-bold tracking-wider">STEP 3</div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">자동화된 시공성 검토 (Automated Reviewer)</h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
-              'The AI Scientist'의 자동 검토기 논리를 응용합니다. 설계안이 <strong>원자력 안전 기준 및 시공 표준 사양</strong>을 준수하는지 자동으로 검토하고, 시공성/안전성을 정량적으로 점수화합니다.
-            </p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Dashboard */}
-            <div className="w-full lg:w-2/3 bg-white rounded-3xl shadow-lg border border-gray-100 p-8 md:p-10 flex flex-col justify-center space-y-8">
-              <h3 className="text-2xl font-bold text-gray-800 flex items-center border-b border-gray-100 pb-4">
-                <ShieldCheck className="w-7 h-7 mr-3 text-green-600" /> 종합 시공성 평가 대시보드
-              </h3>
-              
-              <div className="space-y-8">
-                {metrics.map((m, i) => (
-                  <div key={i} className="space-y-3">
-                    <div className="flex justify-between font-bold text-gray-700 text-lg">
-                      <span>{m.label}</span>
-                      <span className="text-gray-900">{m.score} <span className="text-sm text-gray-400 font-normal">/ 100</span></span>
-                    </div>
-                    <div className="w-full bg-gray-100 rounded-full h-5 overflow-hidden shadow-inner">
-                      <div 
-                        className={`${m.color} h-5 rounded-full transition-all duration-1000 ease-out relative`}
-                        style={{ width: `${m.score}%` }}
-                      >
-                        <div className="absolute inset-0 bg-white/20 w-full h-full"></div>
+        return (
+          <section className="py-24 px-6 lg:px-8 bg-gray-50 border-b border-gray-200">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+              <div className="w-full md:w-1/2 space-y-6">
+                <div className="inline-block px-4 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-bold tracking-wider">STEP 1</div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">시공 중심의 아이디어 제안</h2>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  Constructor-Engineer Co-reasoning 메커니즘을 통해 설계 초기부터 현장의 제약과 과거의 지식을 융합하여 실현 가능한 아이디어를 도출합니다.
+                </p>
+                <div className="flex flex-col space-y-3 pt-4">
+                  {tabs.map((tab, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setActiveTab(idx)}
+                      className={`flex items-center p-5 rounded-2xl border transition-all duration-300 text-left ${activeTab === idx ? 'bg-white border-blue-400 shadow-lg transform scale-[1.02]' : 'bg-white/50 border-gray-200 hover:bg-white hover:border-gray-300'}`}
+                    >
+                      <div className={`p-3 rounded-xl ${activeTab === idx ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-500'} mr-5 transition-colors`}>
+                        {tab.icon}
                       </div>
+                      <span className={`font-bold text-lg ${activeTab === idx ? 'text-blue-900' : 'text-gray-700'}`}>{tab.title}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="w-full md:w-1/2 bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 min-h-[400px] flex flex-col justify-center relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-bl-full -z-10"></div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    {tabs[activeTab].icon} <span className="ml-3">{tabs[activeTab].title}</span>
+                  </h3>
+                  <p className="text-gray-600 text-lg leading-relaxed bg-blue-50/50 p-6 rounded-2xl border border-blue-100/50">
+                    {tabs[activeTab].desc}
+                  </p>
+                  {activeTab === 1 && (
+                    <div className="mt-8 grid grid-cols-2 gap-4 animate-fade-in-up">
+                      <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm font-bold border border-red-100 flex items-center shadow-sm"><AlertTriangle className="w-5 h-5 mr-2"/> 간섭 오류 감지 완료</div>
+                      <div className="bg-green-50 text-green-700 p-4 rounded-xl text-sm font-bold border border-green-100 flex items-center shadow-sm"><CheckCircle className="w-5 h-5 mr-2"/> 모듈화 적용 가능성 확인</div>
                     </div>
-                  </div>
-                ))}
+                  )}
               </div>
             </div>
+          </section>
+        );
+      };
 
-            {/* Feedback Loop */}
-            <div className="w-full lg:w-1/3 flex flex-col gap-6">
-              <div className="bg-orange-50 border-l-4 border-orange-400 p-6 rounded-r-2xl shadow-sm flex flex-col justify-center">
-                <div className="flex items-center text-orange-800 font-bold mb-3 text-lg">
-                  <AlertTriangle className="w-6 h-6 mr-2" /> 규제 준수 피드백
-                </div>
-                <p className="text-orange-700 leading-relaxed font-medium">
-                  원자력 안전 기준(Regulatory Guides) 스캔 결과, 일부 배관 용접부 접근성이 표준 사양 미달로 감지됨.
+      // --------------------------------------------------------
+      // Section: Step 2. Agentic Tree Search
+      // --------------------------------------------------------
+      const Step2Section = () => {
+        const [simulating, setSimulating] = useState(false);
+        const [pathFound, setPathFound] = useState(false);
+
+        const startSim = () => {
+          setSimulating(true);
+          setPathFound(false);
+          setTimeout(() => {
+            setSimulating(false);
+            setPathFound(true);
+          }, 3000);
+        };
+
+        return (
+          <section className="py-24 px-6 lg:px-8 bg-white border-b border-gray-200">
+            <div className="max-w-6xl mx-auto flex flex-col gap-10">
+              <div className="text-center max-w-3xl mx-auto space-y-4">
+                <div className="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-800 rounded-full text-sm font-bold tracking-wider">STEP 2</div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">시공 시뮬레이션 및 최적화 실행</h2>
+                <p className="text-gray-600 text-lg">
+                  'The AI Scientist'의 <strong>에이전트 기반 트리 탐색(Agentic Tree Search)</strong> 기술을 적용합니다. 
+                  수천 가지 시공 시나리오를 자율적으로 생성하고, 시뮬레이션 중 발생하는 오류(물리적 충돌 등)를 스스로 교정(Debugging)합니다.
                 </p>
               </div>
-              
-              <div className="bg-blue-50 border border-blue-200 p-8 rounded-3xl flex-1 flex flex-col justify-center items-center text-center shadow-inner relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100/50 rounded-bl-full -z-10"></div>
-                <GitMerge className="w-12 h-12 text-blue-500 mb-4" />
-                <div className="font-extrabold text-blue-900 text-xl mb-3">피드백 루프 작동</div>
-                <p className="text-blue-800 font-medium leading-relaxed">
-                  평가 점수가 기준치 미달 시, 자동으로 <strong>STEP 1(아이디어 제안)</strong>으로 데이터를 회귀시켜 설계 수정안을 재도출합니다.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  };
 
-  // --------------------------------------------------------
-  // Section: Step 4. Manuscript Composer
-  // --------------------------------------------------------
-  const Step4Section = () => {
-    const [generating, setGenerating] = useState(false);
-    const [done, setDone] = useState(false);
-
-    const handleGenerate = () => {
-      setGenerating(true);
-      setTimeout(() => {
-        setGenerating(false);
-        setDone(true);
-      }, 2500);
-    };
-
-    return (
-      <section className="py-24 px-6 lg:px-8 bg-white mb-20">
-        <div className="max-w-6xl mx-auto flex flex-col gap-10">
-          <div className="space-y-4 max-w-3xl">
-            <div className="inline-block px-4 py-1.5 bg-purple-100 text-purple-800 rounded-full text-sm font-bold tracking-wider">STEP 4</div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">시공 지침서 자동 생성 (Manuscript Composer)</h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
-              증거 기반의 시뮬레이션 최적화 결과를 바탕으로 현장 작업자와 엔지니어가 즉시 활용할 수 있는 <strong>시공 기술 지침서(Method Statement)</strong>와 3D 시각화 보고서를 자동으로 작성합니다.
-            </p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="w-full lg:w-1/3 flex flex-col justify-center items-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-300 p-10 text-center">
-              <FileText className="w-20 h-20 text-purple-400 mb-6" />
-              <h3 className="font-extrabold text-gray-800 text-2xl mb-3">Method Statement 생성</h3>
-              <p className="text-gray-600 mb-8 leading-relaxed">최적화된 시뮬레이션 로그, 자재 명세, 안전 규제 항목을 통합하여 문서를 렌더링합니다.</p>
-              <button 
-                onClick={handleGenerate}
-                disabled={generating || done}
-                className={`px-8 py-4 rounded-2xl font-bold text-lg text-white transition-all shadow-xl w-full flex justify-center items-center
-                  ${done ? 'bg-green-500' : (generating ? 'bg-purple-400' : 'bg-purple-600 hover:bg-purple-700 hover:-translate-y-1')}`}
-              >
-                {generating ? <Settings className="w-6 h-6 animate-spin mr-2" /> : (done ? <CheckCircle className="w-6 h-6 mr-2" /> : <Play className="w-6 h-6 mr-2" />)}
-                {generating ? '문서 생성 중...' : (done ? '보고서 생성 완료' : '자동 생성 시작')}
-              </button>
-            </div>
-
-            <div className="w-full lg:w-2/3 bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col min-h-[450px]">
-              {/* Fake PDF Header */}
-              <div className="bg-slate-800 px-6 py-4 flex items-center space-x-2">
-                <div className="flex space-x-2">
-                  <div className="w-3.5 h-3.5 rounded-full bg-red-500"></div>
-                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-500"></div>
-                  <div className="w-3.5 h-3.5 rounded-full bg-green-500"></div>
+              <div className="bg-slate-900 rounded-3xl p-8 relative overflow-hidden flex flex-col min-h-[500px] shadow-2xl">
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+                  <h3 className="text-white font-semibold flex items-center text-lg"><Activity className="w-6 h-6 mr-3 text-indigo-400"/> 시공 경로 탐색 시뮬레이터</h3>
+                  <button 
+                    onClick={startSim}
+                    disabled={simulating}
+                    className={`px-6 py-3 rounded-xl font-bold flex items-center transition-all ${simulating ? 'bg-slate-700 text-slate-300' : 'bg-indigo-500 hover:bg-indigo-400 text-white shadow-lg shadow-indigo-500/30'}`}
+                  >
+                    {simulating ? <Settings className="w-5 h-5 mr-2 animate-spin" /> : <Play className="w-5 h-5 mr-2" />}
+                    {simulating ? '수천 가지 시나리오 탐색 및 자가 교정 중...' : '대형 기기 반입 경로 최적화 시작'}
+                  </button>
                 </div>
-                <div className="ml-6 text-sm font-mono text-slate-300 flex-1 text-center bg-slate-700 py-1.5 rounded-md">
-                  AI_Method_Statement_Rev01.pdf
-                </div>
-                <div className="w-12"></div>
-              </div>
-              
-              <div className="p-10 flex-1 relative bg-gray-100 flex justify-center overflow-hidden">
-                {!done && !generating && (
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 flex-col bg-white">
-                    <FileText className="w-20 h-20 mb-4 opacity-30" />
-                    <p className="font-medium text-lg">좌측의 버튼을 눌러 문서를 생성하세요</p>
-                  </div>
-                )}
-                
-                {generating && (
-                  <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-sm space-y-6 animate-pulse">
-                    <div className="h-10 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-5 bg-gray-200 rounded w-1/3 mb-10"></div>
-                    <div className="h-40 bg-purple-50 rounded-lg w-full mb-6 flex items-center justify-center text-purple-300 font-bold border border-purple-100">
-                      Generating 3D Visualization...
-                    </div>
-                    <div className="space-y-3">
-                      <div className="h-4 bg-gray-200 rounded w-full"></div>
-                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                      <div className="h-4 bg-gray-200 rounded w-4/6"></div>
-                    </div>
-                  </div>
-                )}
 
-                {done && (
-                  <div className="w-full max-w-2xl bg-white p-10 rounded-xl shadow-lg animate-fade-in-up border border-gray-200">
-                    <div className="border-b-4 border-purple-600 pb-4 mb-6">
-                      <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">시공 기술 지침서 (Method Statement)</h1>
-                      <div className="flex justify-between items-end mt-4 text-sm font-medium text-gray-500">
-                        <span>프로젝트: 차세대 원전 시공 고도화</span>
-                        <span>작성자: AI Constructability Agent</span>
-                      </div>
-                    </div>
+                {/* Tree Visualization */}
+                <div className="flex-1 flex justify-center items-center relative min-h-[300px]">
+                  {/* Root */}
+                  <div className="absolute top-0 w-14 h-14 bg-blue-500 rounded-full border-4 border-slate-800 z-10 flex justify-center items-center text-white font-bold text-sm shadow-lg">시작</div>
+                  
+                  {/* Paths */}
+                  <svg className="absolute w-full h-full pointer-events-none" style={{ top: '28px' }}>
+                    <path d="M 50% 0 L 30% 120px" stroke={simulating ? "#f87171" : "#334155"} strokeWidth="4" fill="none" className={simulating ? "animate-pulse" : ""} strokeDasharray="6,6" />
+                    <path d="M 50% 0 L 50% 120px" stroke={simulating ? "#fbbf24" : "#334155"} strokeWidth="4" fill="none" className={simulating ? "animate-pulse" : ""} strokeDasharray="6,6" />
+                    <path d="M 50% 0 L 70% 120px" stroke={pathFound ? "#4ade80" : (simulating ? "#60a5fa" : "#334155")} strokeWidth={pathFound ? "6" : "4"} fill="none" />
                     
-                    <div className="space-y-6">
-                      <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 flex gap-6 items-start">
-                        <div className="w-32 h-32 bg-purple-100 rounded-lg flex-shrink-0 flex items-center justify-center border border-purple-200">
-                          <Layers className="text-purple-600 w-12 h-12"/>
+                    {/* Level 2 */}
+                    <path d="M 70% 120px L 60% 240px" stroke={simulating ? "#f87171" : "#334155"} strokeWidth="4" fill="none" strokeDasharray="6,6"/>
+                    <path d="M 70% 120px L 80% 240px" stroke={pathFound ? "#4ade80" : (simulating ? "#60a5fa" : "#334155")} strokeWidth={pathFound ? "6" : "4"} fill="none" />
+                  </svg>
+
+                  {/* Nodes */}
+                  <div className={`absolute top-[120px] left-[30%] -ml-5 w-10 h-10 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center font-bold ${simulating ? 'bg-red-500 text-white text-xs shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-slate-700 text-transparent'}`}>충돌</div>
+                  <div className={`absolute top-[120px] left-[50%] -ml-5 w-10 h-10 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center font-bold ${simulating ? 'bg-yellow-500 text-white text-xs shadow-[0_0_15px_rgba(234,179,8,0.5)]' : 'bg-slate-700 text-transparent'}`}>초과</div>
+                  <div className={`absolute top-[120px] left-[70%] -ml-5 w-12 h-12 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center transition-colors ${pathFound ? 'bg-green-500' : (simulating ? 'bg-blue-400' : 'bg-slate-600')}`}></div>
+                  
+                  <div className={`absolute top-[240px] left-[60%] -ml-5 w-10 h-10 rounded-full border-2 border-slate-800 z-10 flex justify-center items-center font-bold ${simulating ? 'bg-red-500 text-white text-xs shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-slate-700 text-transparent'}`}>오류</div>
+                  <div className={`absolute top-[240px] left-[80%] -ml-8 w-16 h-16 rounded-full border-4 border-slate-800 z-10 flex justify-center items-center font-extrabold text-white transition-all duration-500 ${pathFound ? 'bg-green-500 scale-110 shadow-[0_0_20px_rgba(74,222,128,0.8)]' : 'bg-slate-700 scale-100 text-transparent'}`}>
+                    최적
+                  </div>
+                </div>
+
+                <div className="h-20 mt-8 flex items-center justify-center">
+                  {pathFound && (
+                    <div className="bg-green-900/40 text-green-400 px-6 py-4 rounded-2xl border border-green-500/50 flex items-center animate-fade-in-up shadow-lg">
+                      <CheckCircle className="w-6 h-6 mr-3 text-green-400" /> 
+                      <span className="font-bold text-lg">자가 교정 완료: 대형 기기 최적 반입 경로 도출 (예상 공기 15% 단축)</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // --------------------------------------------------------
+      // Section: Step 3. Reviewer
+      // --------------------------------------------------------
+      const Step3Section = () => {
+        const [scores, setScores] = useState({ const: 0, access: 0, safety: 0 });
+
+        useEffect(() => {
+          // Simulate scores rising when component is mounted (scrolled into view roughly)
+          const timer = setTimeout(() => {
+            setScores({ const: 85, access: 92, safety: 98 });
+          }, 500);
+          return () => clearTimeout(timer);
+        }, []);
+
+        const metrics = [
+          { label: "시공 편의성 (Constructability)", score: scores.const, color: "bg-blue-500" },
+          { label: "자재 접근성 (Material Access)", score: scores.access, color: "bg-indigo-500" },
+          { label: "작업자 안전성 (Worker Safety)", score: scores.safety, color: "bg-green-500" }
+        ];
+
+        return (
+          <section className="py-24 px-6 lg:px-8 bg-gray-50 border-b border-gray-200">
+            <div className="max-w-6xl mx-auto flex flex-col gap-12">
+              <div className="space-y-4 max-w-3xl">
+                <div className="inline-block px-4 py-1.5 bg-green-100 text-green-800 rounded-full text-sm font-bold tracking-wider">STEP 3</div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">자동화된 시공성 검토 (Automated Reviewer)</h2>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  'The AI Scientist'의 자동 검토기 논리를 응용합니다. 설계안이 <strong>원자력 안전 기준 및 시공 표준 사양</strong>을 준수하는지 자동으로 검토하고, 시공성/안전성을 정량적으로 점수화합니다.
+                </p>
+              </div>
+
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* Dashboard */}
+                <div className="w-full lg:w-2/3 bg-white rounded-3xl shadow-lg border border-gray-100 p-8 md:p-10 flex flex-col justify-center space-y-8">
+                  <h3 className="text-2xl font-bold text-gray-800 flex items-center border-b border-gray-100 pb-4">
+                    <ShieldCheck className="w-7 h-7 mr-3 text-green-600" /> 종합 시공성 평가 대시보드
+                  </h3>
+                  
+                  <div className="space-y-8">
+                    {metrics.map((m, i) => (
+                      <div key={i} className="space-y-3">
+                        <div className="flex justify-between font-bold text-gray-700 text-lg">
+                          <span>{m.label}</span>
+                          <span className="text-gray-900">{m.score} <span className="text-sm text-gray-400 font-normal">/ 100</span></span>
                         </div>
-                        <div>
-                          <h3 className="font-bold text-gray-900 text-lg mb-2">1. 대형 기기 반입 최적 경로 도출</h3>
-                          <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                            <strong>[결과 요약]</strong> Agentic Tree Search 시뮬레이션 결과, B구역을 통한 반입 경로가 기존 설계안(A구역) 대비 시공 공기를 <strong>15% 단축</strong>하며, 장비 간섭 확률이 0%로 검증되었습니다.
-                          </p>
-                          <div className="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">
-                            시뮬레이션 검증 완료
+                        <div className="w-full bg-gray-100 rounded-full h-5 overflow-hidden shadow-inner">
+                          <div 
+                            className={`${m.color} h-5 rounded-full transition-all duration-1000 ease-out relative`}
+                            style={{ width: `${m.score}%` }}
+                          >
+                            <div className="absolute inset-0 bg-white/20 w-full h-full"></div>
                           </div>
                         </div>
                       </div>
-
-                      <div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-3">2. 현장 안전 및 규제 준수 지침</h3>
-                        <div className="bg-white border border-gray-200 rounded-lg p-5">
-                          <ul className="text-sm text-gray-700 space-y-3">
-                            <li className="flex items-start">
-                              <ShieldCheck className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
-                              <span><strong>근로자 안전 보장:</strong> 도출된 반입 경로 상의 임시 지지대(Temporary Support) 위치가 자동 설계 도면에 반영되었습니다.</span>
-                            </li>
-                            <li className="flex items-start">
-                              <ShieldCheck className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
-                              <span><strong>원자력 안전 규정 충족:</strong> 규제 가이드라인 제4조(접근성 및 보수성) 기준을 100% 충족함을 확인했습니다.</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                )}
+                </div>
+
+                {/* Feedback Loop */}
+                <div className="w-full lg:w-1/3 flex flex-col gap-6">
+                  <div className="bg-orange-50 border-l-4 border-orange-400 p-6 rounded-r-2xl shadow-sm flex flex-col justify-center">
+                    <div className="flex items-center text-orange-800 font-bold mb-3 text-lg">
+                      <AlertTriangle className="w-6 h-6 mr-2" /> 규제 준수 피드백
+                    </div>
+                    <p className="text-orange-700 leading-relaxed font-medium">
+                      원자력 안전 기준(Regulatory Guides) 스캔 결과, 일부 배관 용접부 접근성이 표준 사양 미달로 감지됨.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-blue-50 border border-blue-200 p-8 rounded-3xl flex-1 flex flex-col justify-center items-center text-center shadow-inner relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100/50 rounded-bl-full -z-10"></div>
+                    <GitMerge className="w-12 h-12 text-blue-500 mb-4" />
+                    <div className="font-extrabold text-blue-900 text-xl mb-3">피드백 루프 작동</div>
+                    <p className="text-blue-800 font-medium leading-relaxed">
+                      평가 점수가 기준치 미달 시, 자동으로 <strong>STEP 1(아이디어 제안)</strong>으로 데이터를 회귀시켜 설계 수정안을 재도출합니다.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
+        );
+      };
+
+      // --------------------------------------------------------
+      // Section: Step 4. Manuscript Composer
+      // --------------------------------------------------------
+      const Step4Section = () => {
+        const [generating, setGenerating] = useState(false);
+        const [done, setDone] = useState(false);
+
+        const handleGenerate = () => {
+          setGenerating(true);
+          setTimeout(() => {
+            setGenerating(false);
+            setDone(true);
+          }, 2500);
+        };
+
+        return (
+          <section className="py-24 px-6 lg:px-8 bg-white mb-20">
+            <div className="max-w-6xl mx-auto flex flex-col gap-10">
+              <div className="space-y-4 max-w-3xl">
+                <div className="inline-block px-4 py-1.5 bg-purple-100 text-purple-800 rounded-full text-sm font-bold tracking-wider">STEP 4</div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">시공 지침서 자동 생성 (Manuscript Composer)</h2>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  증거 기반의 시뮬레이션 최적화 결과를 바탕으로 현장 작업자와 엔지니어가 즉시 활용할 수 있는 <strong>시공 기술 지침서(Method Statement)</strong>와 3D 시각화 보고서를 자동으로 작성합니다.
+                </p>
+              </div>
+
+              <div className="flex flex-col lg:flex-row gap-8">
+                <div className="w-full lg:w-1/3 flex flex-col justify-center items-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-300 p-10 text-center">
+                  <FileText className="w-20 h-20 text-purple-400 mb-6" />
+                  <h3 className="font-extrabold text-gray-800 text-2xl mb-3">Method Statement 생성</h3>
+                  <p className="text-gray-600 mb-8 leading-relaxed">최적화된 시뮬레이션 로그, 자재 명세, 안전 규제 항목을 통합하여 문서를 렌더링합니다.</p>
+                  <button 
+                    onClick={handleGenerate}
+                    disabled={generating || done}
+                    className={`px-8 py-4 rounded-2xl font-bold text-lg text-white transition-all shadow-xl w-full flex justify-center items-center
+                      ${done ? 'bg-green-500' : (generating ? 'bg-purple-400' : 'bg-purple-600 hover:bg-purple-700 hover:-translate-y-1')}`}
+                  >
+                    {generating ? <Settings className="w-6 h-6 animate-spin mr-2" /> : (done ? <CheckCircle className="w-6 h-6 mr-2" /> : <Play className="w-6 h-6 mr-2" />)}
+                    {generating ? '문서 생성 중...' : (done ? '보고서 생성 완료' : '자동 생성 시작')}
+                  </button>
+                </div>
+
+                <div className="w-full lg:w-2/3 bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col min-h-[450px]">
+                  {/* Fake PDF Header */}
+                  <div className="bg-slate-800 px-6 py-4 flex items-center space-x-2">
+                    <div className="flex space-x-2">
+                      <div className="w-3.5 h-3.5 rounded-full bg-red-500"></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-yellow-500"></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-green-500"></div>
+                    </div>
+                    <div className="ml-6 text-sm font-mono text-slate-300 flex-1 text-center bg-slate-700 py-1.5 rounded-md">
+                      AI_Method_Statement_Rev01.pdf
+                    </div>
+                    <div className="w-12"></div>
+                  </div>
+                  
+                  <div className="p-10 flex-1 relative bg-gray-100 flex justify-center overflow-hidden">
+                    {!done && !generating && (
+                      <div className="absolute inset-0 flex items-center justify-center text-gray-400 flex-col bg-white">
+                        <FileText className="w-20 h-20 mb-4 opacity-30" />
+                        <p className="font-medium text-lg">좌측의 버튼을 눌러 문서를 생성하세요</p>
+                      </div>
+                    )}
+                    
+                    {generating && (
+                      <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-sm space-y-6 animate-pulse">
+                        <div className="h-10 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-5 bg-gray-200 rounded w-1/3 mb-10"></div>
+                        <div className="h-40 bg-purple-50 rounded-lg w-full mb-6 flex items-center justify-center text-purple-300 font-bold border border-purple-100">
+                          Generating 3D Visualization...
+                        </div>
+                        <div className="space-y-3">
+                          <div className="h-4 bg-gray-200 rounded w-full"></div>
+                          <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                          <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+                        </div>
+                      </div>
+                    )}
+
+                    {done && (
+                      <div className="w-full max-w-2xl bg-white p-10 rounded-xl shadow-lg animate-fade-in-up border border-gray-200">
+                        <div className="border-b-4 border-purple-600 pb-4 mb-6">
+                          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">시공 기술 지침서 (Method Statement)</h1>
+                          <div className="flex justify-between items-end mt-4 text-sm font-medium text-gray-500">
+                            <span>프로젝트: 차세대 원전 시공 고도화</span>
+                            <span>작성자: AI Constructability Agent</span>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-6">
+                          <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 flex gap-6 items-start">
+                            <div className="w-32 h-32 bg-purple-100 rounded-lg flex-shrink-0 flex items-center justify-center border border-purple-200">
+                              <Layers className="text-purple-600 w-12 h-12"/>
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-gray-900 text-lg mb-2">1. 대형 기기 반입 최적 경로 도출</h3>
+                              <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                                <strong>[결과 요약]</strong> Agentic Tree Search 시뮬레이션 결과, B구역을 통한 반입 경로가 기존 설계안(A구역) 대비 시공 공기를 <strong>15% 단축</strong>하며, 장비 간섭 확률이 0%로 검증되었습니다.
+                              </p>
+                              <div className="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">
+                                시뮬레이션 검증 완료
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <h3 className="font-bold text-gray-900 text-lg mb-3">2. 현장 안전 및 규제 준수 지침</h3>
+                            <div className="bg-white border border-gray-200 rounded-lg p-5">
+                              <ul className="text-sm text-gray-700 space-y-3">
+                                <li className="flex items-start">
+                                  <ShieldCheck className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                                  <span><strong>근로자 안전 보장:</strong> 도출된 반입 경로 상의 임시 지지대(Temporary Support) 위치가 자동 설계 도면에 반영되었습니다.</span>
+                                </li>
+                                <li className="flex items-start">
+                                  <ShieldCheck className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                                  <span><strong>원자력 안전 규정 충족:</strong> 규제 가이드라인 제4조(접근성 및 보수성) 기준을 100% 충족함을 확인했습니다.</span>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      return (
+        <div className="min-h-screen bg-white font-sans text-gray-900 overflow-y-auto selection:bg-blue-200 scroll-smooth">
+          <IntroSection />
+          <Step1Section />
+          <Step2Section />
+          <Step3Section />
+          <Step4Section />
+
+          <footer className="py-8 text-center text-gray-500 text-sm bg-gray-50 border-t border-gray-200">
+            &copy; 2026 AI Constructability Framework. All rights reserved.
+          </footer>
         </div>
-      </section>
-    );
-  };
+      );
+    };
 
-  return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 overflow-y-auto selection:bg-blue-200 scroll-smooth">
-      <IntroSection />
-      <Step1Section />
-      <Step2Section />
-      <Step3Section />
-      <Step4Section />
-
-      <footer className="py-8 text-center text-gray-500 text-sm bg-gray-50 border-t border-gray-200">
-        &copy; 2026 AI Constructability Framework. All rights reserved.
-      </footer>
-
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes fade-in-up {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}} />
-    </div>
-  );
-};
-
-export default App;
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
